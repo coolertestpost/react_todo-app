@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Todo } from '../type/Todo';
 import { TodosContext } from '../contexts/TodosContext';
@@ -10,6 +10,7 @@ type Props = {
 export const TodoItem: React.FC<Props> = ({ todo }) => {
 
   const { dispatch, deleteTodo } = useContext(TodosContext);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     if (todo.completed) {
@@ -20,7 +21,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   }, []);
 
   return (
-    <li className={`${todo.completed ? 'completed' : ''}`}>
+    <li className={`${todo.completed ? 'completed' : ''} ${editing ? 'editing' : ''}`}>
       <div className="view">
         <input 
           type="checkbox" 
@@ -38,8 +39,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         />
         <label 
           htmlFor={`${todo.id}`}
-          onDoubleClick={(event) => {
-            event.currentTarget.parentElement?.parentElement?.classList.add('editing');
+          onDoubleClick={() => {
+            // event.currentTarget.parentElement?.parentElement?.classList.add('editing');
+            setEditing(true);
           }}
         >
           { todo.title }
